@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import * as authService from "../../services/authService";
+import "./Signup.css";
+
 
 const SignupForm = (props) => {
   const navigate = useNavigate();
@@ -110,7 +112,7 @@ const SignupForm = (props) => {
           <label htmlFor="role">Role:</label>
           <select id="role" name="role" value={role} onChange={handleChange}>
             <option value="admin">Admin</option>
-            <option value="student">Student</option>
+            <option value="student">student</option>
             <option value="teacher">Teacher</option>
           </select>
         </div>
