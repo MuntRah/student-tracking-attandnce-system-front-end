@@ -1,0 +1,39 @@
+nav {
+  background-color: black;
+  color: aliceblue;
+  padding: 1rem;
+}
+
+ul {
+  display: flex;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+  justify-content: space-between;
+}
+
+li {
+  color: aliceblue;
+}
+
+a {
+  color: aliceblue;
+  font-weight: 300;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+a:hover {
+  color: #7b7878;
+}
+
+.signin {
+}
+
+.signup {
+  margin-right: 86vw;
+}
+.dashboard {
+  margin-left: 60vw;
+}

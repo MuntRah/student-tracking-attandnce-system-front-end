@@ -1,6 +1,7 @@
-import { Link } from 'react-router-dom';
-import { AuthedUserContext } from '../../App';
-import { useContext } from 'react';
+import { Link } from "react-router-dom";
+import { AuthedUserContext } from "../../App";
+import { useContext } from "react";
+import "./NavBar.css";
 
 const NavBar = ({ handleSignout }) => {
   const user = useContext(AuthedUserContext);
@@ -11,10 +12,17 @@ const NavBar = ({ handleSignout }) => {
           <ul>
             <li>Welcome, {user.username}</li>
             <li>
-              <Link to="/">Dashboard</Link>
+              <Link className="dashboard" to="/">
+                Dashboard
+              </Link>
             </li>
             <li>
-              <Link to="" onClick={handleSignout}>
+              <Link className="newClass" to="class/new">
+                newClass
+              </Link>
+            </li>
+            <li>
+              <Link className="signout" to="" onClick={handleSignout}>
                 Sign Out
               </Link>
             </li>
@@ -24,10 +32,15 @@ const NavBar = ({ handleSignout }) => {
         <nav>
           <ul>
             <li>
-              <Link to="/signin">Sign In</Link>
+              <Link className="signin" to="/signin">
+                Sign In
+              </Link>
             </li>
+
             <li>
-              <Link to="/signup">Sign Up</Link>
+              <Link className="signup" to="/signup">
+                Sign Up
+              </Link>
             </li>
           </ul>
         </nav>

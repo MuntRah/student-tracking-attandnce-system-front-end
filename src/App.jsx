@@ -1,16 +1,53 @@
-import { useState, createContext } from 'react';
-import { Routes, Route } from 'react-router-dom';
-import NavBar from './components/NavBar/NavBar';
-import Landing from './components/Landing/Landing';
-import Dashboard from './components/Dashboard/Dashboard';
-import SignupForm from './components/SignupForm/SignupForm';
-import SigninForm from './components/SigninForm/SigninForm';
-import * as authService from '../src/services/authService'; // import the authservice
+import { useState, createContext } from "react";
+import { Routes, Route, useNavigate } from "react-router-dom";
+import NavBar from "./components/NavBar/NavBar";
+import Landing from "./components/Landing/Landing";
+import Dashboard from "./components/Dashboard/Dashboard";
+import SignupForm from "./components/SignupForm/SignupForm";
+import SigninForm from "./components/SigninForm/SigninForm";
+import ClassForm from "./components/classForm/classForm";
+import * as authService from "../src/services/authService";
+import * as classService from '../src/services/classService';
 
 export const AuthedUserContext = createContext(null);
 
 const App = () => {
-  const [user, setUser] = useState(authService.getUser()); // using the method from authservice
+  const [user, setUser] = useState(authService.getUser());
+  const [classes, setClass] = useState([]);
+  const navigate = useNavigate();
+
+  const handleAddClass = async (classFormData) => {
+    try {
+      const newClass = await classService.newClass(classFormData); 
+      setClass([...classes, newClass]);
+      navigate("/new");
+    } catch (err) {
+      console.error("Error adding class:", err);
+    }
+  };
+
+  const handleDeleteClass = async (classId) => {
+    try {
+      await classService.deleteClass(classId); 
+      const updatedClasses = await classService.index(); 
+      setClass(updatedClasses);
+      navigate("/classId");
+    } catch (err) {
+      console.error("Error deleting class:", err);
+    }
+  };
+
+  const handleUpdateClass = async (classId, formData) => {
+    try {
+      const updatedClass = await classService.updateClass(classId, formData); 
+      setClass(
+        classes.map((cls) => (classId === cls._id ? updatedClass : cls))
+      );
+      navigate("/classId");
+    } catch (err) {
+      console.error("Error updating class:", err);
+    }
+  };
 
   const handleSignout = () => {
     authService.signout();
@@ -18,20 +55,32 @@ const App = () => {
   };
 
   return (
-    <>
-      <AuthedUserContext.Provider value={user}>
-        <NavBar user={user} handleSignout={handleSignout} />
-        <Routes>
-          {user ? (
+    <AuthedUserContext.Provider value={user}>
+      <NavBar user={user} handleSignout={handleSignout} />
+      <Routes>
+        {user ? (
+          <>
             <Route path="/" element={<Dashboard user={user} />} />
-          ) : (
-            <Route path="/" element={<Landing />} />
-          )}
-          <Route path="/signup" element={<SignupForm setUser={setUser} />} />
-          <Route path="/signin" element={<SigninForm setUser={setUser} />} />
-        </Routes>
-      </AuthedUserContext.Provider>
-    </>
+            {user.role === "admin" && (
+              <Route
+                path="class/new"
+                element={
+                  <ClassForm
+                    handleAddClass={handleAddClass}
+                    handleDeleteClass={handleDeleteClass}
+                    handleUpdateClass={handleUpdateClass}
+                  />
+                }
+              />
+            )}
+          </>
+        ) : (
+          <Route path="/" element={<Landing />} />
+        )}
+        <Route path="/signup" element={<SignupForm setUser={setUser} />} />
+        <Route path="/signin" element={<SigninForm setUser={setUser} />} />
+      </Routes>
+    </AuthedUserContext.Provider>
   );
 };
 

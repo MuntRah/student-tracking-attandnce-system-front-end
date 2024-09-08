@@ -1,0 +1,90 @@
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2rem;
+  padding: 1rem;
+  font-family: Arial, sans-serif;
+  background-color: #5a6268;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+p {
+  color: red;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+form {
+  width: 100%;
+  max-width: 400px;
+  background-color: #fff9eb79;
+  border: 1px solid #ddd;
+  border-radius: 15px;
+  padding: 2rem;
+  box-shadow: none;
+}
+
+form div {
+  margin-bottom: 1rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #555;
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="password"],
+select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-size: 1rem;
+}
+
+button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 3px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-right: 0.5rem;
+}
+
+button:disabled {
+  background-color: #1a2df6;
+  cursor: not-allowed;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #a3cfff;
+}
+
+a {
+  text-decoration: none;
+}
+
+a button {
+  background-color: #fc3700;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+a button:hover {
+  background-color: #5a6268;
+}
