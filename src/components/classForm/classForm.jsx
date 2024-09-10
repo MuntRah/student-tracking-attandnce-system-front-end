@@ -17,21 +17,19 @@ const ClassForm = ({
   handleAddClass,
   handleUpdateClass,
   handleDeleteClass,
-  teachers = [], 
+  teachers = [],
 }) => {
   const [formData, setFormData] = useState({
     className: "",
     classCode: "",
-    teacherId: "", 
+    teacherId: "",
     students: "",
     schedule: [{ day: "", startTime: "", endTime: "" }],
   });
   const [selectedClassId, setSelectedClassId] = useState(null);
 
   useEffect(() => {
-    
     if (selectedClassId) {
-      
     }
   }, [selectedClassId]);
 
@@ -78,7 +76,7 @@ const ClassForm = ({
     setFormData({
       className: "",
       classCode: "",
-      teacherId: "", 
+      teacherId: "",
       students: "",
       schedule: [{ day: "", startTime: "", endTime: "" }],
     });
@@ -91,7 +89,7 @@ const ClassForm = ({
       setFormData({
         className: "",
         classCode: "",
-        teacherId: "", 
+        teacherId: "",
         students: "",
         schedule: [{ day: "", startTime: "", endTime: "" }],
       });

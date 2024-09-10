@@ -7,8 +7,10 @@ import SignupForm from "./components/SignupForm/SignupForm";
 import SigninForm from "./components/SigninForm/SigninForm";
 import ClassForm from "./components/classForm/classForm";
 import * as authService from "../src/services/authService";
-import * as classService from '../src/services/classService';
-
+import * as classService from "../src/services/classService";
+import * as classDetailService from "../src/services/classDetailService";
+import ClassDetail from "./components/ClassDetail";
+import ClassList from "./components/ClassList";
 export const AuthedUserContext = createContext(null);
 
 const App = () => {
@@ -18,7 +20,7 @@ const App = () => {
 
   const handleAddClass = async (classFormData) => {
     try {
-      const newClass = await classService.newClass(classFormData); 
+      const newClass = await classService.newClass(classFormData);
       setClass([...classes, newClass]);
       navigate("/new");
     } catch (err) {
@@ -28,8 +30,8 @@ const App = () => {
 
   const handleDeleteClass = async (classId) => {
     try {
-      await classService.deleteClass(classId); 
-      const updatedClasses = await classService.index(); 
+      await classService.deleteClass(classId);
+      const updatedClasses = await classService.index();
       setClass(updatedClasses);
       navigate("/classId");
     } catch (err) {
@@ -39,7 +41,7 @@ const App = () => {
 
   const handleUpdateClass = async (classId, formData) => {
     try {
-      const updatedClass = await classService.updateClass(classId, formData); 
+      const updatedClass = await classService.updateClass(classId, formData);
       setClass(
         classes.map((cls) => (classId === cls._id ? updatedClass : cls))
       );
@@ -61,6 +63,8 @@ const App = () => {
         {user ? (
           <>
             <Route path="/" element={<Dashboard user={user} />} />
+            <Route path="/class/:classId" element={<ClassDetail />} />{" "}
+            <Route path="/class" element={<ClassList />} />
             {user.role === "admin" && (
               <Route
                 path="class/new"

@@ -1,5 +1,4 @@
-const BACKEND_URL = `${import.meta.env.VITE_EXPRESS_BACKEND_URL}/class`;
-
+const BACKEND_URL = `${import.meta.env.VITE_EXPRESS_BACKEND_URL}/admin/class`;
 
 const newClass = async (classData) => {
   try {
@@ -25,7 +24,6 @@ const newClass = async (classData) => {
   }
 };
 
-
 const updateClass = async (classId, updatedData) => {
   try {
     const token = localStorage.getItem("token");
@@ -49,7 +47,6 @@ const updateClass = async (classId, updatedData) => {
     throw err;
   }
 };
-
 
 const deleteClass = async (classId) => {
   try {
