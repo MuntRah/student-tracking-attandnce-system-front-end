@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link, useParams } from "react-router-dom";
-import AttendanceForm from "./AttendanceForm/AttendanceForm";
-import AttendanceList from "./AttendanceList";
+import { useParams } from "react-router-dom";
 const BACKEND_URL = `${import.meta.env.VITE_EXPRESS_BACKEND_URL}/class`;
 
 const ClassDetail = () => {
@@ -22,11 +20,7 @@ const ClassDetail = () => {
             Authorization: `Bearer ${token}`, // Add a space after 'Bearer'
           },
         });
-        // console.log(response.data);
-
         setClassDetails(response.data); // Set the response data in state
-
-        console.log(classDetails);
       } catch (err) {
         setError(err.message); // Set any error that occurs
         console.error("Error fetching class details:", err);
@@ -37,21 +31,18 @@ const ClassDetail = () => {
   }, [classId, token]);
 
   // Handle loading and error states
-  // if (error) {
-  //   return <div>Error: {error}</div>;
-  // }
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
-  // if (!classDetails) {
-  //   return <div>Loading...</div>;
-  // }
+  if (!classDetails) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
       <h2>Class Details</h2>
-      {error && <div>Error: {error}</div>}
-      {!classDetails ? (
-        <div>Loading...</div>
-      ) : (
+      {classDetails ? (
         <>
           <p>
             <strong>Class Code:</strong> {classDetails.classCode}
@@ -67,7 +58,7 @@ const ClassDetail = () => {
             <strong>Students:</strong>
           </p>
           <ul>
-            {classDetails.students.length > 0 ? (
+            {classDetails.students?.length > 0 ? (
               classDetails.students.map((student) => (
                 <li key={student._id}>
                   {student.username} ({student.email})
@@ -79,7 +70,7 @@ const ClassDetail = () => {
           </ul>
           <div>
             <strong>Schedule:</strong>
-            {classDetails.schedule.length > 0 ? (
+            {classDetails.schedule?.length > 0 ? (
               <ul>
                 {classDetails.schedule.map((slot, index) => (
                   <li key={index}>
@@ -92,10 +83,9 @@ const ClassDetail = () => {
               "No schedule available"
             )}
           </div>
-
-          <AttendanceForm classId={classId} students={classDetails.students} />
-          <AttendanceList classId={classId} />
         </>
+      ) : (
+        <p>Loading class details...</p>
       )}
     </div>
   );

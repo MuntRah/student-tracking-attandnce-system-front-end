@@ -1,6 +1,6 @@
 import { AuthedUserContext } from "../../App";
 import { useContext } from "react";
-const AdminDashboard = ({ props }) => {
+const AdminDashboard = ({}) => {
   const user = useContext(AuthedUserContext);
   return (
     <main>
