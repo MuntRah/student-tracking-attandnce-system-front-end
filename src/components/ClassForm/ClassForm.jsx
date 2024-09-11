@@ -1,24 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
-const timeOptions = [
-  "08:00",
-  "09:00",
-  "10:00",
-  "11:00",
-  "12:00",
-  "13:00",
-  "14:00",
-  "15:00",
-  "16:00",
-  "17:00",
-];
+const timeOptions = ["08:00", "09:00", "10:00", "11:00", "12:00"];
 
-const ClassForm = ({
-  handleAddClass,
-  handleUpdateClass,
-  handleDeleteClass,
-  teachers = [],
-}) => {
+const ClassForm = ({ handleAddClass }) => {
   const [formData, setFormData] = useState({
     className: "",
     classCode: "",
@@ -26,12 +10,6 @@ const ClassForm = ({
     students: "",
     schedule: [{ day: "", startTime: "", endTime: "" }],
   });
-  const [selectedClassId, setSelectedClassId] = useState(null);
-
-  useEffect(() => {
-    if (selectedClassId) {
-    }
-  }, [selectedClassId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -51,28 +29,9 @@ const ClassForm = ({
     });
   };
 
-  const handleAddSchedule = () => {
-    setFormData({
-      ...formData,
-      schedule: [...formData.schedule, { day: "", startTime: "", endTime: "" }],
-    });
-  };
-
-  const handleDeleteSchedule = (index) => {
-    const updatedSchedule = formData.schedule.filter((_, i) => i !== index);
-    setFormData({
-      ...formData,
-      schedule: updatedSchedule,
-    });
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (selectedClassId) {
-      await handleUpdateClass(selectedClassId, formData);
-    } else {
-      await handleAddClass(formData);
-    }
+    await handleAddClass(formData);
     setFormData({
       className: "",
       classCode: "",
@@ -80,30 +39,14 @@ const ClassForm = ({
       students: "",
       schedule: [{ day: "", startTime: "", endTime: "" }],
     });
-    setSelectedClassId(null);
-  };
-
-  const handleDelete = async () => {
-    if (selectedClassId) {
-      await handleDeleteClass(selectedClassId);
-      setFormData({
-        className: "",
-        classCode: "",
-        teacherId: "",
-        students: "",
-        schedule: [{ day: "", startTime: "", endTime: "" }],
-      });
-      setSelectedClassId(null);
-    }
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <label htmlFor="className">Class Name:</label>
+        <label>Class Name:</label>
         <input
           type="text"
-          id="className"
           name="className"
           value={formData.className}
           onChange={handleChange}
@@ -111,10 +54,9 @@ const ClassForm = ({
         />
       </div>
       <div>
-        <label htmlFor="classCode">Class Code:</label>
+        <label>Class Code:</label>
         <input
           type="text"
-          id="classCode"
           name="classCode"
           value={formData.classCode}
           onChange={handleChange}
@@ -122,10 +64,9 @@ const ClassForm = ({
         />
       </div>
       <div>
-        <label htmlFor="teacherId">Teacher ID:</label>
+        <label>Teacher ID:</label>
         <input
           type="text"
-          id="teacherId"
           name="teacherId"
           value={formData.teacherId}
           onChange={handleChange}
@@ -133,10 +74,9 @@ const ClassForm = ({
         />
       </div>
       <div>
-        <label htmlFor="students">Students (comma separated):</label>
+        <label>Students (comma separated):</label>
         <input
           type="text"
-          id="students"
           name="students"
           value={formData.students}
           onChange={handleChange}
@@ -187,22 +127,9 @@ const ClassForm = ({
               </option>
             ))}
           </select>
-          <button type="button" onClick={() => handleDeleteSchedule(index)}>
-            Delete Schedule
-          </button>
         </div>
       ))}
-      <button type="button" onClick={handleAddSchedule}>
-        Add Another Schedule
-      </button>
-      <button type="submit">
-        {selectedClassId ? "Update Class" : "Add Class"}
-      </button>
-      {selectedClassId && (
-        <button type="button" onClick={handleDelete}>
-          Delete Class
-        </button>
-      )}
+      <button type="submit">Add Class</button>
     </form>
   );
 };

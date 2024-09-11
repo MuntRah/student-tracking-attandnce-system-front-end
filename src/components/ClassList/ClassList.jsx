@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
 
 // Correct BACKEND_URL definition
 const BACKEND_URL = `${import.meta.env.VITE_EXPRESS_BACKEND_URL}/class`;
@@ -44,10 +43,7 @@ const ClassList = () => {
         <ul>
           {classes.map((classItem) => (
             <li key={classItem._id}>
-              {/* Create a dynamic link to the class detail page */}
-              <Link to={`/class/${classItem._id}`}>
-                {classItem.className} - {classItem.classCode}
-              </Link>
+              {classItem.className} - {classItem.classCode}
             </li>
           ))}
         </ul>
