@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-
-const BACKEND_URL = `${import.meta.env.VITE_EXPRESS_BACKEND_URL}/class`;
+// Correct BACKEND_URL definition
+const BACKEND_URL = `${import.meta.env.VITE_EXPRESS_BACKEND_URL}/admin/class`;
 
 const ClassList = () => {
   const [classes, setClasses] = useState([]);
@@ -14,18 +14,18 @@ const ClassList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-       
+        // Correct the Authorization header
         const response = await axios.get(BACKEND_URL, {
           headers: {
-            Authorization: `Bearer ${token}`, 
+            Authorization: `Bearer ${token}`, // Correct the token format
           },
         });
-        setClasses(response.data);
+        setClasses(response.data); // Set fetched data
       } catch (err) {
-        setError(err.message); 
+        setError(err.message); // Capture any error
         console.error("Error fetching class details:", err);
       } finally {
-        setLoading(false); 
+        setLoading(false); // Stop loading after fetch attempt
       }
     };
 
@@ -45,7 +45,7 @@ const ClassList = () => {
           {classes.map((classItem) => (
             <li key={classItem._id}>
               {/* Create a dynamic link to the class detail page */}
-              <Link to={`/class/${classItem._id}`}>
+              <Link to={`/admin/class/${classItem._id}`}>
                 {classItem.className} - {classItem.classCode}
               </Link>
             </li>

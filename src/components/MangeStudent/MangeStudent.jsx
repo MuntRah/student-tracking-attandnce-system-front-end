@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
 
+// Correct BACKEND_URL definition
+const BACKEND_URL = `${
+  import.meta.env.VITE_EXPRESS_BACKEND_URL
+}/admin/users/student`;
 
-const BACKEND_URL = `${import.meta.env.VITE_EXPRESS_BACKEND_URL}/class`;
-
-const ClassList = () => {
-  const [classes, setClasses] = useState([]);
+const MangeStudent = () => {
+  const [Students, setStudents] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const token = localStorage.getItem("token");
@@ -14,18 +15,18 @@ const ClassList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-       
+        // Correct the Authorization header
         const response = await axios.get(BACKEND_URL, {
           headers: {
-            Authorization: `Bearer ${token}`, 
+            Authorization: `Bearer ${token}`, // Correct the token format
           },
         });
-        setClasses(response.data);
+        setStudents(response.data); // Set fetched data
       } catch (err) {
-        setError(err.message); 
+        setError(err.message); // Capture any error
         console.error("Error fetching class details:", err);
       } finally {
-        setLoading(false); 
+        setLoading(false); // Stop loading after fetch attempt
       }
     };
 
@@ -37,17 +38,15 @@ const ClassList = () => {
 
   return (
     <div>
-      <h1>Class List</h1>
-      {classes.length === 0 ? (
-        <p>No classes found.</p>
+      <h1>Students List</h1>
+
+      {Students.length === 0 ? (
+        <p>No Students found.</p>
       ) : (
         <ul>
-          {classes.map((classItem) => (
-            <li key={classItem._id}>
-              {/* Create a dynamic link to the class detail page */}
-              <Link to={`/class/${classItem._id}`}>
-                {classItem.className} - {classItem.classCode}
-              </Link>
+          {Students.map((Student) => (
+            <li key={Student._id}>
+              {Student.username} - {Student.email}
             </li>
           ))}
         </ul>
@@ -56,4 +55,4 @@ const ClassList = () => {
   );
 };
 
-export default ClassList;
+export default MangeStudent;
