@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-// Correct BACKEND_URL definition
-const BACKEND_URL = `${import.meta.env.VITE_EXPRESS_BACKEND_URL}/class`;
+const BACKEND_URL = `${import.meta.env.VITE_EXPRESS_BACKEND_URL}/admin/class`;
 
 const ClassList = () => {
   const [classes, setClasses] = useState([]);
@@ -13,18 +12,17 @@ const ClassList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Correct the Authorization header
         const response = await axios.get(BACKEND_URL, {
           headers: {
-            Authorization: `Bearer ${token}`, // Correct the token format
+            Authorization: `Bearer ${token}`,
           },
         });
-        setClasses(response.data); // Set fetched data
+        setClasses(response.data);
       } catch (err) {
-        setError(err.message); // Capture any error
+        setError(err.message);
         console.error("Error fetching class details:", err);
       } finally {
-        setLoading(false); // Stop loading after fetch attempt
+        setLoading(false);
       }
     };
 

@@ -8,9 +8,12 @@ import SigninForm from "./components/SigninForm/SigninForm";
 import ClassForm from "./components/classForm/classForm";
 import * as authService from "../src/services/authService";
 import * as classService from "../src/services/classService";
-import * as classDetailService from "../src/services/classDetailService";
-import ClassDetail from "./components/ClassDetail";
-import ClassList from "./components/ClassList";
+import ClassList from "./components/classList/classList";
+import ClassDetail from "./components/classDetails/classDetails";
+import * as attendenceService from "./services/attendenceService";
+import Attendance from "./components/attendence/attendence";
+import ClassListAdmin from "./components/classListAdmin/classListAdmin";
+
 export const AuthedUserContext = createContext(null);
 
 const App = () => {
@@ -64,7 +67,9 @@ const App = () => {
           <>
             <Route path="/" element={<Dashboard user={user} />} />
             <Route path="/class/:classId" element={<ClassDetail />} />{" "}
+            <Route path="/attendance/new" element={<Attendance />} />
             <Route path="/class" element={<ClassList />} />
+            <Route path="/admin/class" element={<ClassListAdmin />} />
             {user.role === "admin" && (
               <Route
                 path="class/new"

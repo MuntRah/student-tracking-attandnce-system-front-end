@@ -34,11 +34,11 @@ const SigninForm = (props) => {
 
   return (
     <main>
-      <h1>Log In</h1>
       <p>{message}</p>
       <form autoComplete="off" onSubmit={handleSubmit}>
+        <h1 className="title">Log In</h1>
         <div>
-          <label htmlFor="email">Username:</label>
+          <label htmlFor="username">Username:</label>
           <input
             type="text"
             autoComplete="off"
@@ -59,10 +59,13 @@ const SigninForm = (props) => {
             onChange={handleChange}
           />
         </div>
-        <div>
-          <button>Log In</button>
-          <Link to="/">
-            <button>Cancel</button>
+        <div className="login">
+          <button type="signin">Log In</button>
+        </div>
+        <div className="form-footer">
+          <p>Don't have an account?</p>
+          <Link className="signup-button" to="/signup">
+            Sign Up
           </Link>
         </div>
       </form>

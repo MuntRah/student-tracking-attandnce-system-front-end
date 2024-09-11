@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import * as authService from "../../services/authService";
 import "./Signup.css";
 
-
 const SignupForm = (props) => {
   const navigate = useNavigate();
   const [message, setMessage] = useState([""]);
@@ -45,9 +44,9 @@ const SignupForm = (props) => {
 
   return (
     <main>
-      <h1>Sign Up</h1>
       <p>{message}</p>
       <form onSubmit={handleSubmit}>
+        <h1 className="title">Sign Up</h1>
         <div>
           <label htmlFor="username">Username:</label>
           <input
@@ -78,6 +77,7 @@ const SignupForm = (props) => {
             onChange={handleChange}
           />
         </div>
+        <div className="">
         <div>
           <label htmlFor="first">First Name</label>
           <input
@@ -98,6 +98,7 @@ const SignupForm = (props) => {
             onChange={handleChange}
           />
         </div>
+        </div>
         <div>
           <label htmlFor="email">email</label>
           <input
@@ -117,9 +118,14 @@ const SignupForm = (props) => {
           </select>
         </div>
         <div>
-          <button disabled={isFormInvalid()}>Sign Up</button>
-          <Link to="/">
-            <button>Cancel</button>
+          <button className="signup" disabled={isFormInvalid()}>
+            SignUp
+          </button>
+        </div>
+        <div className="form-footer">
+          <p>Already have an account?</p>
+          <Link className="signup-button" to="/signin">
+            Sign In
           </Link>
         </div>
       </form>
