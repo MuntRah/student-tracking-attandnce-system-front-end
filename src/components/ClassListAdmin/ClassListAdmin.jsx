@@ -7,6 +7,7 @@ const BACKEND_URL = `${import.meta.env.VITE_EXPRESS_BACKEND_URL}/admin/class`;
 
 const ClassList = () => {
   const [classes, setClasses] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const token = localStorage.getItem("token");
@@ -31,13 +32,26 @@ const ClassList = () => {
     fetchData();
   }, [token]);
 
+  const filteredClasses = classes.filter(
+    (classItem) =>
+      classItem.className.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      classItem.classCode.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   if (loading) return <p>Loading classes...</p>;
   if (error) return <p>Error: {error}</p>;
 
   return (
     <div className="class-list-container">
       <h1>Class List</h1>
-      {classes.length === 0 ? (
+      <input
+        type="text"
+        placeholder="Search by class name or code"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        className="search-input"
+      />
+      {filteredClasses.length === 0 ? (
         <p>No classes found.</p>
       ) : (
         <table className="class-list-table">
@@ -48,7 +62,7 @@ const ClassList = () => {
             </tr>
           </thead>
           <tbody>
-            {classes.map((classItem) => (
+            {filteredClasses.map((classItem) => (
               <tr key={classItem._id}>
                 <td>
                   <Link to={`/admin/class/${classItem._id}`}>

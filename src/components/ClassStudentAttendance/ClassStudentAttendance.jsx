@@ -2,6 +2,8 @@ import { useEffect, useState, useContext } from "react";
 import { getClassStudentAttendance } from "../../services/classStudentService";
 import { AuthedUserContext } from "../../App";
 import { formatDate } from "../../utils/dateFormatter";
+import "./ClassStudentAttendence.css";
+
 const ClassStudentAttendance = ({ classId }) => {
   const user = useContext(AuthedUserContext);
   const [attendanceRecords, setAttendanceRecords] = useState([]);
@@ -28,15 +30,20 @@ const ClassStudentAttendance = ({ classId }) => {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div>
-      <h1>Attendance Records</h1>
+    <div className="class-student-attendance-container">
+      <h1 className="attendance-header">Attendance Records</h1>
       {attendanceRecords.length === 0 ? (
         <p>No attendance records found for this student.</p>
       ) : (
-        <ul>
+        <ul className="attendance-list">
           {attendanceRecords.map((record) => (
             <li key={record._id}>
-              {formatDate(record.date)} - {record.status}
+              <span className="attendance-date">{formatDate(record.date)}</span>
+              <span
+                className={`attendance-status ${record.status.toLowerCase()}`}
+              >
+                {record.status}
+              </span>
             </li>
           ))}
         </ul>

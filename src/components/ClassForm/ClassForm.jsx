@@ -9,7 +9,7 @@ const BACKEND_URL = `${import.meta.env.VITE_EXPRESS_BACKEND_URL}/admin/users`;
 const timeOptions = ["08:00", "09:00", "10:00", "11:00", "12:00"];
 
 const ClassForm = ({ handleAddClass }) => {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     className: "",
     classCode: "",
@@ -70,7 +70,7 @@ const ClassForm = ({ handleAddClass }) => {
     try {
       await newClass(formData);
 
-      navigate("/class");
+      navigate("/admin/class");
     } catch (error) {
       console.error("Error adding class:", error);
     }

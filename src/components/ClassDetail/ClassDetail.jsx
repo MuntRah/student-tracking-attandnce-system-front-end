@@ -13,7 +13,6 @@ const ClassDetail = () => {
   const { classId } = useParams();
   const [classDetails, setClassDetails] = useState(null);
   const [error, setError] = useState(null);
-
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -24,7 +23,6 @@ const ClassDetail = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-
         setClassDetails(response.data);
       } catch (err) {
         setError(err.message);
@@ -37,10 +35,10 @@ const ClassDetail = () => {
 
   return (
     <div className="class-detail-container">
-      <h2>Class Details</h2>
+      <h2 className="class-detail-header">Class Details</h2>
       {error && <div className="error-message">Error: {error}</div>}
       {!classDetails ? (
-        <div>Loading...</div>
+        <div className="loading">Loading...</div>
       ) : (
         <>
           <div className="class-info">
@@ -58,27 +56,32 @@ const ClassDetail = () => {
           {user.role === "teacher" && (
             <div className="students-schedule-container">
               <div className="students-list">
-                <p>
+                <p className="students-header">
                   <strong>Students:</strong>
                 </p>
-                <ul>
-                  {classDetails.students.length > 0 ? (
-                    classDetails.students.map((student) => (
-                      <li key={student._id}>
-                        Name : {student.username} - Email :{student.email}
+                {classDetails.students.length > 0 ? (
+                  <ul>
+                    {classDetails.students.map((student) => (
+                      <li key={student._id} className="student-item">
+                        <span className="student-name">
+                          Name: {student.username}
+                        </span>
+                        <span className="student-email">
+                          Email: {student.email}
+                        </span>
                       </li>
-                    ))
-                  ) : (
-                    <li>No students enrolled</li>
-                  )}
-                </ul>
+                    ))}
+                  </ul>
+                ) : (
+                  <p>No students enrolled</p>
+                )}
               </div>
               <div className="schedule-list">
                 <strong>Schedule:</strong>
                 {classDetails.schedule.length > 0 ? (
                   <ul>
                     {classDetails.schedule.map((slot, index) => (
-                      <li key={index}>
+                      <li key={index} className="schedule-item">
                         <div>Day: {slot.day}</div>
                         <div>Start Time: {slot.startTime}</div>
                         <div>End Time: {slot.endTime}</div>
@@ -99,7 +102,10 @@ const ClassDetail = () => {
                   students={classDetails.students}
                   ClassDetail={classDetails}
                 />
-                <Link to={`/class/${classId}/view-attendance`}>
+                <Link
+                  to={`/class/${classId}/view-attendance`}
+                  className="view-attendance-link"
+                >
                   View Attendance Records
                 </Link>
               </>

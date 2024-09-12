@@ -17,6 +17,7 @@ import MangeStudent from "./components/MangeStudent/MangeStudent";
 import ClassDetailAdmin from "./components/ClassDetailAdmin/ClassDetailAdmin";
 import ClassStudentAttendance from "./components/ClassStudentAttendance/ClassStudentAttendance";
 import AttendanceList from "./components/AttendanceList/AttendanceList";
+import Footer from "./components/Footer/Footer";
 export const AuthedUserContext = createContext(null);
 
 const App = () => {
@@ -128,6 +129,8 @@ const App = () => {
           </>
         )}
       </Routes>
+      <Footer/>
+
     </AuthedUserContext.Provider>
   );
 };

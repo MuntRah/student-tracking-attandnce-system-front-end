@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
+import "./AttendenceForm.css";
 
 const BACKEND_URL = `${import.meta.env.VITE_EXPRESS_BACKEND_URL}/attendance`;
 
 const AttendanceForm = ({ classId, students = [], ClassDetail }) => {
   const [attendanceRecords, setAttendanceRecords] = useState({});
-  const [date, setDate] = useState(new Date().toISOString().split("T")[0]); 
+  const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
 
@@ -35,19 +36,24 @@ const AttendanceForm = ({ classId, students = [], ClassDetail }) => {
   };
 
   return (
-    <div>
-      <label>Date:</label>
+    <div className="attendance-form-container">
+      <h2 className="attendance-form-header">Mark Attendance</h2>
+      <label className="attendance-date-label">Date:</label>
       <input
         type="date"
+        className="attendance-date-input"
         value={date}
         onChange={(e) => setDate(e.target.value)}
       />
-      <ul>
+      <ul className="attendance-list">
         {students.length > 0 ? (
           students.map((student) => (
             <li key={student._id}>
-              {student.username}
+              <span className="attendance-student-name">
+                {student.username}
+              </span>
               <select
+                className="attendance-select"
                 onChange={(e) =>
                   handleAttendanceChange(student._id, e.target.value)
                 }
@@ -66,7 +72,9 @@ const AttendanceForm = ({ classId, students = [], ClassDetail }) => {
           <li>No students enrolled</li>
         )}
       </ul>
-      <button onClick={submitAttendance}>Submit Attendance</button>
+      <button className="attendance-button" onClick={submitAttendance}>
+        Submit Attendance
+      </button>
     </div>
   );
 };

@@ -1,0 +1,75 @@
+.attendance-form-container {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.attendance-form-header {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #333;
+}
+
+.attendance-date-label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.attendance-date-input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.attendance-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.attendance-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.attendance-student-name {
+  font-weight: bold;
+  color: #333;
+}
+
+.attendance-select {
+  padding: 6px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+  cursor: pointer;
+}
+
+.attendance-button {
+  width: 100%;
+  padding: 10px;
+  font-size: 1.1rem;
+  background-color: blueviolet;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.attendance-button:hover {
+  background-color: #0056b3;
+}

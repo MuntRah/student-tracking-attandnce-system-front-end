@@ -2,12 +2,11 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import "./MangeStudent.css";
 
-const BACKEND_URL = `${
-  import.meta.env.VITE_EXPRESS_BACKEND_URL
-}/admin/users/student`;
+const BACKEND_URL = `${import.meta.env.VITE_EXPRESS_BACKEND_URL}/admin/users/student`;
 
 const MangeStudent = () => {
-  const [Students, setStudents] = useState([]);
+  const [students, setStudents] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const token = localStorage.getItem("token");
@@ -23,7 +22,7 @@ const MangeStudent = () => {
         setStudents(response.data);
       } catch (err) {
         setError(err.message);
-        console.error("Error fetching class details:", err);
+        console.error("Error fetching student details:", err);
       } finally {
         setLoading(false);
       }
@@ -32,13 +31,24 @@ const MangeStudent = () => {
     fetchData();
   }, [token]);
 
+  const filteredStudents = students.filter((student) =>
+    student.username.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   if (loading) return <p className="loading-message">Loading students...</p>;
   if (error) return <p className="error-message">Error: {error}</p>;
 
   return (
     <div className="student-list-container">
       <h1>Students List</h1>
-      {Students.length === 0 ? (
+      <input
+        type="text"
+        placeholder="Search by name"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        className="search-input"
+      />
+      {filteredStudents.length === 0 ? (
         <p>No Students found.</p>
       ) : (
         <table className="student-table">
@@ -49,10 +59,10 @@ const MangeStudent = () => {
             </tr>
           </thead>
           <tbody>
-            {Students.map((Student) => (
-              <tr key={Student._id}>
-                <td className="student-name">{Student.username}</td>
-                <td className="student-email">{Student.email}</td>
+            {filteredStudents.map((student) => (
+              <tr key={student._id}>
+                <td className="student-name">{student.username}</td>
+                <td className="student-email">{student.email}</td>
               </tr>
             ))}
           </tbody>
