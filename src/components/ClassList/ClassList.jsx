@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
+import "./ClassList.css";
 
-// Correct BACKEND_URL definition
+
 const BACKEND_URL = `${import.meta.env.VITE_EXPRESS_BACKEND_URL}/class`;
 
 const ClassList = () => {
@@ -13,18 +15,18 @@ const ClassList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Correct the Authorization header
+ 
         const response = await axios.get(BACKEND_URL, {
           headers: {
-            Authorization: `Bearer ${token}`, // Correct the token format
+            Authorization: `Bearer ${token}`, 
           },
         });
-        setClasses(response.data); // Set fetched data
+        setClasses(response.data); 
       } catch (err) {
-        setError(err.message); // Capture any error
+        setError(err.message); 
         console.error("Error fetching class details:", err);
       } finally {
-        setLoading(false); // Stop loading after fetch attempt
+        setLoading(false); 
       }
     };
 
@@ -35,18 +37,31 @@ const ClassList = () => {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div>
+    <div className="class-list-container">
       <h1>Class List</h1>
       {classes.length === 0 ? (
         <p>No classes found.</p>
       ) : (
-        <ul>
-          {classes.map((classItem) => (
-            <li key={classItem._id}>
-              {classItem.className} - {classItem.classCode}
-            </li>
-          ))}
-        </ul>
+        <table className="class-schedule-table">
+          <thead>
+            <tr>
+              <th>Class Code</th>
+              <th>Class Name</th>
+              <th>Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            {classes.map((classItem) => (
+              <tr key={classItem._id}>
+                <td>{classItem.classCode}</td>
+                <td>{classItem.className}</td>
+                <td>
+                  <Link to={`/class/${classItem._id}`}>View Details</Link>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       )}
     </div>
   );

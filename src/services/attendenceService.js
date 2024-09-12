@@ -1,72 +1,45 @@
+import axios from "axios";
 const BACKEND_URL = `${import.meta.env.VITE_EXPRESS_BACKEND_URL}/attendance`;
 
-const getAttendanceById = async (id) => {
+export const newAttendance = async (classId, attendanceData) => {
   try {
-    const token = localStorage.getItem("token");
-    const res = await fetch(`${BACKEND_URL}/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    const json = await res.json();
-    if (!res.ok) {
-      throw new Error(json.error || "Failed to fetch attendance record");
-    }
-
-    return json;
-  } catch (err) {
-    console.error("Error fetching attendance record:", err);
-    throw err;
+    const response = await axios.post(
+      `${BACKEND_URL}/new/${classId}`,
+      attendanceData,
+      {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      }
+    );
+    return response.data; // Return the success data
+  } catch (error) {
+    console.error("Error submitting attendance:", error);
+    throw new Error(
+      error.response?.data?.message || "Failed to mark attendance"
+    );
   }
 };
 
-const postAttendance = async (attendanceData) => {
-  try {
-    const token = localStorage.getItem("token");
-    const res = await fetch(`${BACKEND_URL}/new`, { 
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(attendanceData),
-    });
-
-    const json = await res.json();
-    if (!res.ok) {
-      throw new Error(json.error || "Failed to create attendance record");
+export const updateAttendance = async (attendanceId, classData) => {
+  const response = await axios.put(
+    `${BACKEND_URL}/${attendanceId}`,
+    classData,
+    {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     }
-
-    return json;
-  } catch (err) {
-    console.error("Error creating attendance record:", err);
-    throw err;
-  }
+  );
+  return response.data;
 };
 
-const updateAttendance = async (id, updatedData) => {
+export const getAttendance = async (classId) => {
   try {
-    const token = localStorage.getItem("token");
-    const res = await fetch(`${BACKEND_URL}/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(updatedData),
+    const response = await axios.get(`${BACKEND_URL}/index/${classId}`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     });
-
-    const json = await res.json();
-    if (!res.ok) {
-      throw new Error(json.error || "Failed to update attendance record");
-    }
-
-    return json;
-  } catch (err) {
-    console.error("Error updating attendance record:", err);
-    throw err;
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching attendance:", error);
+    throw new Error(
+      error.response?.data?.message || "Failed to fetch attendance"
+    );
   }
 };
-
-export { getAttendanceById, postAttendance, updateAttendance };

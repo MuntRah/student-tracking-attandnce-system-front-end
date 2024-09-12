@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-
+import './ClassDetailAdmin.css'
 const BACKEND_URL = `${import.meta.env.VITE_EXPRESS_BACKEND_URL}/admin/class`;
-
 const ClassDetailAdmin = ({ handleUpdateClass, handleDeleteClass }) => {
   const { classId } = useParams();
   const [classDetails, setClassDetails] = useState(null);
   const [error, setError] = useState(null);
   const [formData, setFormData] = useState({});
   const navigate = useNavigate();
-
   const token = localStorage.getItem("token");
-
   useEffect(() => {
     const fetchClassDetails = async () => {
       try {
@@ -25,29 +22,23 @@ const ClassDetailAdmin = ({ handleUpdateClass, handleDeleteClass }) => {
         setError(err.message);
       }
     };
-
     fetchClassDetails();
   }, [classId, token]);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     await handleUpdateClass(classId, formData);
-    navigate("/admin/class"); // Navigate back to the class list
+    navigate("/admin/class"); 
   };
-
   const handleDelete = async () => {
     await handleDeleteClass(classId);
-    navigate("/admin/class"); // Navigate back to the class list
+    navigate("/admin/class"); 
   };
-
   if (error) return <div>Error: {error}</div>;
   if (!classDetails) return <div>Loading...</div>;
-
   return (
     <div>
       <h2>Class Details</h2>
@@ -81,13 +72,12 @@ const ClassDetailAdmin = ({ handleUpdateClass, handleDeleteClass }) => {
             onChange={handleChange}
           />
         </div>
-        <button type="submit">Update Class</button>
-        <button type="button" onClick={handleDelete}>
+        <button className="update" type="submit">Update Class</button>
+        <button className="delete"type="button" onClick={handleDelete}>
           Delete Class
         </button>
       </form>
     </div>
   );
 };
-
 export default ClassDetailAdmin;

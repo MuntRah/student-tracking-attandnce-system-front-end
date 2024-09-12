@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
+import "./ClassListAdmin.css"; // Import the CSS file
 
 const BACKEND_URL = `${import.meta.env.VITE_EXPRESS_BACKEND_URL}/admin/class`;
 
@@ -17,12 +19,12 @@ const ClassList = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        setClasses(response.data);
+        setClasses(response.data); // Set fetched data
       } catch (err) {
-        setError(err.message);
+        setError(err.message); // Capture any error
         console.error("Error fetching class details:", err);
       } finally {
-        setLoading(false);
+        setLoading(false); // Stop loading after fetch attempt
       }
     };
 
@@ -33,18 +35,31 @@ const ClassList = () => {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div>
+    <div className="class-list-container">
       <h1>Class List</h1>
       {classes.length === 0 ? (
         <p>No classes found.</p>
       ) : (
-        <ul>
-          {classes.map((classItem) => (
-            <li key={classItem._id}>
-              {classItem.className} - {classItem.classCode}
-            </li>
-          ))}
-        </ul>
+        <table className="class-list-table">
+          <thead>
+            <tr>
+              <th>Class Name</th>
+              <th>Class Code</th>
+            </tr>
+          </thead>
+          <tbody>
+            {classes.map((classItem) => (
+              <tr key={classItem._id}>
+                <td>
+                  <Link to={`/admin/class/${classItem._id}`}>
+                    {classItem.className}
+                  </Link>
+                </td>
+                <td>{classItem.classCode}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       )}
     </div>
   );

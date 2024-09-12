@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useParams, useNavigate } from "react-router-dom";
 
 const BACKEND_URL = `${import.meta.env.VITE_EXPRESS_BACKEND_URL}/attendance`;
 
-const AttendanceForm = ({ classId, students = [] }) => {
+const AttendanceForm = ({ classId, students = [], ClassDetail }) => {
   const [attendanceRecords, setAttendanceRecords] = useState({});
-  const [date, setDate] = useState(new Date().toISOString().split("T")[0]); // Today's date
+  const [date, setDate] = useState(new Date().toISOString().split("T")[0]); 
   const token = localStorage.getItem("token");
+  const navigate = useNavigate();
 
   const handleAttendanceChange = (studentId, status) => {
     setAttendanceRecords((prev) => ({ ...prev, [studentId]: status }));
@@ -26,7 +28,7 @@ const AttendanceForm = ({ classId, students = [] }) => {
           },
         }
       );
-      alert("Attendance marked successfully");
+      navigate(`/class/${classId}/view-attendance`);
     } catch (err) {
       console.error("Error marking attendance:", err);
     }
@@ -34,7 +36,6 @@ const AttendanceForm = ({ classId, students = [] }) => {
 
   return (
     <div>
-      <h2>Mark Attendance</h2>
       <label>Date:</label>
       <input
         type="date"
