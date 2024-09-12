@@ -6,23 +6,21 @@ import Dashboard from "./components/Dashboard/Dashboard";
 import SignupForm from "./components/SignupForm/SignupForm";
 import SigninForm from "./components/SigninForm/SigninForm";
 import ClassForm from "./components/ClassForm/ClassForm";
-import AttendanceForm from "./components/AttendanceForm/AttendanceForm";
 import * as authService from "../src/services/authService";
 import * as classService from "./services/classService";
-import * as attendanceService from "./services/attendanceService";
-import ClassDetail from "./components/ClassDetail";
-import ClassList from "./components/ClassList";
-import ClassListAdmin from "./components/ClassListAdmin";
+import ClassDetail from "./components/ClassDetail/ClassDetail";
+import ClassList from "./components/ClassList/ClassList";
+import ClassListAdmin from "./components/ClassListAdmin/ClassListAdmin";
 import AdminDashboard from "./components/Dashboard/AdminDashboard";
 import MangeTeacher from "./components/MangeTeacher/MangeTeacher";
 import MangeStudent from "./components/MangeStudent/MangeStudent";
-import ClassDetailAdmin from "./components/ClassDetailAdmin";
-
+import ClassDetailAdmin from "./components/ClassDetailAdmin/ClassDetailAdmin";
+import ClassStudentAttendance from "./components/ClassStudentAttendance/ClassStudentAttendance";
+import AttendanceList from "./components/AttendanceList/AttendanceList";
 export const AuthedUserContext = createContext(null);
 
 const App = () => {
   const [user, setUser] = useState(authService.getUser());
-  const [classes, setClasses] = useState([]);
   const navigate = useNavigate();
 
   const handleAddClass = async (classFormData) => {
@@ -31,16 +29,6 @@ const App = () => {
       console.log("Class added:", response);
     } catch (err) {
       console.error("Error adding class:", err.response || err.message);
-    }
-  };
-  const handleAddAttendance = async (attendanceFormData) => {
-    try {
-      const response = await attendanceService.newAttendance(
-        attendanceFormData
-      );
-      console.log("attendance added:", response);
-    } catch (err) {
-      console.error("Error adding attendance:", err.response || err.message);
     }
   };
 
@@ -111,6 +99,11 @@ const App = () => {
               <>
                 <Route path="/class" element={<ClassList />} />
                 <Route path="/class/:classId" element={<ClassDetail />} />
+
+                <Route
+                  path="/class/:classId/view-attendance"
+                  element={<AttendanceList />}
+                />
               </>
             )}
 
@@ -119,15 +112,10 @@ const App = () => {
               <>
                 <Route path="/class" element={<ClassList />} />
                 <Route path="/class/:classId" element={<ClassDetail />} />
-                <ClassStudentAttendance
-                  classId={classId}
-                  studentId={studentId}
+                <Route
+                  path="/class/:classId/view-attendance"
+                  element={<AttendanceList />}
                 />
-
-                {/* <Route
-                  path="/student/schedule"
-                  element={<div>Schedule Page</div>} // Replace with actual schedule component
-                /> */}
               </>
             )}
           </>

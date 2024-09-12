@@ -1,15 +1,51 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { newClass } from "../../services/classService";
+import "./ClassForm.css";
+
+const BACKEND_URL = `${import.meta.env.VITE_EXPRESS_BACKEND_URL}/admin/users`;
 
 const timeOptions = ["08:00", "09:00", "10:00", "11:00", "12:00"];
 
 const ClassForm = ({ handleAddClass }) => {
+  const navigate = useNavigate(); 
   const [formData, setFormData] = useState({
     className: "",
     classCode: "",
     teacherId: "",
-    students: "",
+    students: [],
     schedule: [{ day: "", startTime: "", endTime: "" }],
   });
+  const [students, setStudents] = useState([]);
+  const [teachers, setTeachers] = useState([]);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchStudentsAndTeachers = async () => {
+      try {
+        const [studentsResponse, teachersResponse] = await Promise.all([
+          axios.get(`${BACKEND_URL}/student`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }),
+          axios.get(`${BACKEND_URL}/teacher`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }),
+        ]);
+        setStudents(studentsResponse.data);
+        setTeachers(teachersResponse.data);
+      } catch (err) {
+        setError(err.message);
+        console.error("Error fetching students and teachers:", err);
+      }
+    };
+
+    fetchStudentsAndTeachers();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,14 +67,13 @@ const ClassForm = ({ handleAddClass }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await handleAddClass(formData);
-    setFormData({
-      className: "",
-      classCode: "",
-      teacherId: "",
-      students: "",
-      schedule: [{ day: "", startTime: "", endTime: "" }],
-    });
+    try {
+      await newClass(formData);
+
+      navigate("/class");
+    } catch (error) {
+      console.error("Error adding class:", error);
+    }
   };
 
   return (
@@ -64,27 +99,48 @@ const ClassForm = ({ handleAddClass }) => {
         />
       </div>
       <div>
-        <label>Teacher ID:</label>
-        <input
-          type="text"
+        <label>Teacher:</label>
+        <select
           name="teacherId"
           value={formData.teacherId}
           onChange={handleChange}
           required
-        />
+        >
+          <option value="">Select Teacher</option>
+          {teachers.map((teacher) => (
+            <option key={teacher._id} value={teacher._id}>
+              {teacher.username} - {teacher.email}
+            </option>
+          ))}
+        </select>
       </div>
       <div>
-        <label>Students (comma separated):</label>
-        <input
-          type="text"
+        <label>Students:</label>
+        <select
           name="students"
           value={formData.students}
-          onChange={handleChange}
-        />
+          onChange={(e) =>
+            setFormData({
+              ...formData,
+              students: Array.from(
+                e.target.selectedOptions,
+                (option) => option.value
+              ),
+            })
+          }
+          multiple
+          required
+        >
+          {students.map((student) => (
+            <option key={student._id} value={student._id}>
+              {student.username} - {student.email}
+            </option>
+          ))}
+        </select>
       </div>
       {formData.schedule.map((item, index) => (
         <div key={index}>
-          <label>Schedule {index + 1}:</label>
+          <label>Schedule :</label>
           <select
             value={item.day}
             onChange={(e) => handleScheduleChange(index, "day", e.target.value)}
@@ -129,7 +185,10 @@ const ClassForm = ({ handleAddClass }) => {
           </select>
         </div>
       ))}
-      <button type="submit">Add Class</button>
+      <button className="addCls" type="submit">
+        Add Class
+      </button>
+      {error && <p>Error: {error}</p>}
     </form>
   );
 };

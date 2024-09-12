@@ -1,0 +1,46 @@
+.dashboard-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f5f5f5;
+  padding: 20px;
+}
+
+.welcome-card {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  max-width: 600px;
+  text-align: center;
+  position: relative;
+}
+
+.welcome-card {
+  content: "";
+  background-image: url("../../assets/istockphoto-1270547297-612x612.jpg");
+  background-position: center;
+  display: block;
+  width: 1500px;
+  height: 340px;
+}
+
+.welcome-text {
+  padding: 20px;
+  position: relative;
+}
+
+.welcome-text h1 {
+  font-size: 2.5rem;
+  color: #333;
+  font-weight: bolder;
+}
+
+.welcome-text p {
+  font-size: 1.25rem;
+  color: #555;
+  margin-top: 10px;
+  margin-top: 50x;
+  font-weight: bold;
+}

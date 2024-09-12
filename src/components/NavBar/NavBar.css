@@ -1,39 +1,67 @@
 nav {
-  background-color: black;
-  color: aliceblue;
-  padding: 1rem;
+  background-color: blueviolet;
+  padding: 15px 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 ul {
-  display: flex;
   list-style-type: none;
-  margin: 0;
   padding: 0;
-  align-items: center;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
 }
 
 li {
-  color: aliceblue;
+  margin: 0 15px;
 }
 
 a {
-  color: aliceblue;
-  font-weight: 300;
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  color: #ecf0f1;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s;
 }
 
 a:hover {
-  color: #7b7878;
+  color: #b8c7d1;
 }
 
+.dashboard,
+.newClass,
+.manageTeachers,
+.attendance,
+.schedule,
+.signout,
 .signin {
+  padding: 8px 12px;
+  border-radius: 4px;
 }
 
 .signup {
-  margin-right: 86vw;
+  margin-right: 1220px;
 }
-.dashboard {
-  margin-left: 60vw;
+.signout {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.signout:hover {
+  background-color: #c0392b;
+}
+
+@media (max-width: 600px) {
+  nav {
+    text-align: center;
+  }
+
+  ul {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  li {
+    margin: 10px 0;
+  }
 }

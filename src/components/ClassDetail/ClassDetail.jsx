@@ -1,28 +1,33 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { AuthedUserContext } from "../../App";
+import AttendanceForm from "../AttendanceForm/AttendanceForm";
+import ClassStudentAttendance from "../ClassStudentAttendance/ClassStudentAttendance";
+import "./ClassDetail.css";
+
 const BACKEND_URL = `${import.meta.env.VITE_EXPRESS_BACKEND_URL}/class`;
 
 const ClassDetail = () => {
-  const { classId } = useParams(); // Extract classId from the URL params
+  const user = useContext(AuthedUserContext);
+  const { classId } = useParams();
   const [classDetails, setClassDetails] = useState(null);
   const [error, setError] = useState(null);
 
-  // Get token from localStorage (assuming the user is already authenticated)
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    // Fetch class details when the component mounts
     const fetchClassDetails = async () => {
       try {
         const response = await axios.get(`${BACKEND_URL}/${classId}`, {
           headers: {
-            Authorization: `Bearer ${token}`, // Add a space after 'Bearer'
+            Authorization: `Bearer ${token}`,
           },
         });
-        setClassDetails(response.data); // Set the response data in state
+
+        setClassDetails(response.data);
       } catch (err) {
-        setError(err.message); // Set any error that occurs
+        setError(err.message);
         console.error("Error fetching class details:", err);
       }
     };
@@ -30,62 +35,81 @@ const ClassDetail = () => {
     fetchClassDetails();
   }, [classId, token]);
 
-  // Handle loading and error states
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-
-  if (!classDetails) {
-    return <div>Loading...</div>;
-  }
-
   return (
-    <div>
+    <div className="class-detail-container">
       <h2>Class Details</h2>
-      {classDetails ? (
+      {error && <div className="error-message">Error: {error}</div>}
+      {!classDetails ? (
+        <div>Loading...</div>
+      ) : (
         <>
-          <p>
-            <strong>Class Code:</strong> {classDetails.classCode}
-          </p>
-          <p>
-            <strong>Class Name:</strong> {classDetails.className}
-          </p>
-          <p>
-            <strong>Teacher:</strong>{" "}
-            {classDetails.teacherId?.username || "No teacher assigned"}
-          </p>
-          <p>
-            <strong>Students:</strong>
-          </p>
-          <ul>
-            {classDetails.students?.length > 0 ? (
-              classDetails.students.map((student) => (
-                <li key={student._id}>
-                  {student.username} ({student.email})
-                </li>
-              ))
+          <div className="class-info">
+            <p>
+              <strong>Class Code:</strong> {classDetails.classCode}
+            </p>
+            <p>
+              <strong>Class Name:</strong> {classDetails.className}
+            </p>
+            <p>
+              <strong>Teacher:</strong>{" "}
+              {classDetails.teacherId?.username || "No teacher assigned"}
+            </p>
+          </div>
+          {user.role === "teacher" && (
+            <div className="students-schedule-container">
+              <div className="students-list">
+                <p>
+                  <strong>Students:</strong>
+                </p>
+                <ul>
+                  {classDetails.students.length > 0 ? (
+                    classDetails.students.map((student) => (
+                      <li key={student._id}>
+                        Name : {student.username} - Email :{student.email}
+                      </li>
+                    ))
+                  ) : (
+                    <li>No students enrolled</li>
+                  )}
+                </ul>
+              </div>
+              <div className="schedule-list">
+                <strong>Schedule:</strong>
+                {classDetails.schedule.length > 0 ? (
+                  <ul>
+                    {classDetails.schedule.map((slot, index) => (
+                      <li key={index}>
+                        <div>Day: {slot.day}</div>
+                        <div>Start Time: {slot.startTime}</div>
+                        <div>End Time: {slot.endTime}</div>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  "No schedule available"
+                )}
+              </div>
+            </div>
+          )}
+          <div className="actions">
+            {user.role === "teacher" ? (
+              <>
+                <AttendanceForm
+                  classId={classId}
+                  students={classDetails.students}
+                  ClassDetail={classDetails}
+                />
+                <Link to={`/class/${classId}/view-attendance`}>
+                  View Attendance Records
+                </Link>
+              </>
+            ) : user.role === "student" ? (
+              <ClassStudentAttendance classId={classId} />
             ) : (
-              <li>No students enrolled</li>
-            )}
-          </ul>
-          <div>
-            <strong>Schedule:</strong>
-            {classDetails.schedule?.length > 0 ? (
-              <ul>
-                {classDetails.schedule.map((slot, index) => (
-                  <li key={index}>
-                    Day: {slot.day}, Start Time: {slot.startTime}, End Time:{" "}
-                    {slot.endTime}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              "No schedule available"
+              <p>Access denied</p>
             )}
           </div>
         </>
-      ) : (
-        <p>Loading class details...</p>
       )}
     </div>
   );

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import "./MangeStudent.css";
 
-// Correct BACKEND_URL definition
 const BACKEND_URL = `${
   import.meta.env.VITE_EXPRESS_BACKEND_URL
 }/admin/users/student`;
@@ -15,41 +15,48 @@ const MangeStudent = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Correct the Authorization header
         const response = await axios.get(BACKEND_URL, {
           headers: {
-            Authorization: `Bearer ${token}`, // Correct the token format
+            Authorization: `Bearer ${token}`,
           },
         });
-        setStudents(response.data); // Set fetched data
+        setStudents(response.data);
       } catch (err) {
-        setError(err.message); // Capture any error
+        setError(err.message);
         console.error("Error fetching class details:", err);
       } finally {
-        setLoading(false); // Stop loading after fetch attempt
+        setLoading(false);
       }
     };
 
     fetchData();
   }, [token]);
 
-  if (loading) return <p>Loading classes...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (loading) return <p className="loading-message">Loading students...</p>;
+  if (error) return <p className="error-message">Error: {error}</p>;
 
   return (
-    <div>
+    <div className="student-list-container">
       <h1>Students List</h1>
-
       {Students.length === 0 ? (
         <p>No Students found.</p>
       ) : (
-        <ul>
-          {Students.map((Student) => (
-            <li key={Student._id}>
-              {Student.username} - {Student.email}
-            </li>
-          ))}
-        </ul>
+        <table className="student-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+            </tr>
+          </thead>
+          <tbody>
+            {Students.map((Student) => (
+              <tr key={Student._id}>
+                <td className="student-name">{Student.username}</td>
+                <td className="student-email">{Student.email}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       )}
     </div>
   );

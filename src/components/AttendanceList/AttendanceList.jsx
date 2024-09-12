@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
-import { getAttendance } from "../services/attendanceService";
-
-const AttendanceList = ({ classId }) => {
+import { useParams } from "react-router-dom";
+import { getAttendance } from "../../services/attendenceService";
+import { formatDate } from "../../utils/dateFormatter";
+const AttendanceList = () => {
+  const { classId } = useParams();
   const [attendance, setAttendance] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -27,14 +29,15 @@ const AttendanceList = ({ classId }) => {
 
   return (
     <div>
-      <h1>Attendance Records</h1>
+      <h1>Attendance Records for the Class</h1>
       {attendance.length === 0 ? (
         <p>No attendance records found.</p>
       ) : (
         <ul>
           {attendance.map((record) => (
             <li key={record._id}>
-              {record.studentId.username} - {record.date}
+              {record.studentId.username} - {formatDate(record.date)} -{" "}
+              {record.status}
             </li>
           ))}
         </ul>
