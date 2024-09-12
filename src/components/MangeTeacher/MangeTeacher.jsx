@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import "./MangeTeacher.css"; 
-const BACKEND_URL = `${
-  import.meta.env.VITE_EXPRESS_BACKEND_URL
-}/admin/users/teacher`;
+import "./MangeTeacher.css";
+
+const BACKEND_URL = `${import.meta.env.VITE_EXPRESS_BACKEND_URL}/admin/users/teacher`;
 
 const MangeTeacher = () => {
-  const [Teachers, setTeachers] = useState([]);
+  const [teachers, setTeachers] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const token = localStorage.getItem("token");
@@ -31,13 +31,24 @@ const MangeTeacher = () => {
     fetchData();
   }, [token]);
 
+  const filteredTeachers = teachers.filter((teacher) =>
+    teacher.username.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   if (loading) return <p className="loading-message">Loading teachers...</p>;
   if (error) return <p className="error-message">Error: {error}</p>;
 
   return (
     <div className="teacher-list-container">
       <h1>Teachers List</h1>
-      {Teachers.length === 0 ? (
+      <input
+        type="text"
+        placeholder="Search by name"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        className="search-input"
+      />
+      {filteredTeachers.length === 0 ? (
         <p>No Teachers found.</p>
       ) : (
         <table className="teacher-table">
@@ -48,10 +59,10 @@ const MangeTeacher = () => {
             </tr>
           </thead>
           <tbody>
-            {Teachers.map((Teacher) => (
-              <tr key={Teacher._id}>
-                <td className="teacher-name">{Teacher.username}</td>
-                <td className="teacher-email">{Teacher.email}</td>
+            {filteredTeachers.map((teacher) => (
+              <tr key={teacher._id}>
+                <td className="teacher-name">{teacher.username}</td>
+                <td className="teacher-email">{teacher.email}</td>
               </tr>
             ))}
           </tbody>
