@@ -42,3 +42,6 @@
   color: #00000061;
   font-weight: bold;
 }
+.element {
+  border: none; /* Removes all borders */
+}

@@ -42,17 +42,19 @@ const ClassDetail = () => {
       ) : (
         <>
           <div className="class-info">
-            <p>
-              <strong>Class Code:</strong> {classDetails.classCode}
-            </p>
-            <p>
-              <strong>Class Name:</strong> {classDetails.className}
-            </p>
-            <p>
-              <strong>Teacher:</strong>{" "}
-              {classDetails.teacherId?.username || "No teacher assigned"}
-            </p>
+            <ul className="class-details-list">
+              <li>
+                <strong>Class Code:</strong> {classDetails.classCode}
+              </li>
+              <li>
+                <strong>Class Name:</strong> {classDetails.className}
+              </li>
+              <li>
+                <strong>Teacher:</strong> {classDetails.teacherId?.username || "No teacher assigned"}
+              </li>
+            </ul>
           </div>
+          
           {user.role === "teacher" && (
             <div className="students-schedule-container">
               <div className="students-list">
@@ -94,6 +96,7 @@ const ClassDetail = () => {
               </div>
             </div>
           )}
+          
           <div className="actions">
             {user.role === "teacher" ? (
               <>

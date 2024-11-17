@@ -1,58 +1,57 @@
 .attendance-container {
+  font-family: Arial, sans-serif;
   padding: 20px;
-  max-width: 600px;
-  margin: 0 auto;
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .attendance-header {
   text-align: center;
-  font-size: 1.5rem;
   margin-bottom: 20px;
 }
 
-.attendance-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+.student-attendance-container {
+  margin-bottom: 40px;
 }
 
-.attendance-list li {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px;
+.student-name {
   margin-bottom: 10px;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.attendance-student-name {
-  font-size: 1.2rem;
-  font-weight: bold;
+.attendance-table {
+  width: 100%;
+  border-collapse: collapse;
 }
 
-.attendance-date {
-  font-size: 1rem;
-  color: #888;
+.attendance-table th,
+.attendance-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.attendance-table th {
+  background-color: #f2f2f2;
 }
 
 .attendance-status {
-  padding: 8px 16px;
-  font-size: 1.1rem;
-  border-radius: 20px;
-  color: #fff;
-  text-transform: uppercase;
   font-weight: bold;
 }
 
 .attendance-status.present {
-  background-color: #28a745;
+  color: green;
+}
+
+.attendance-status.late {
+  color: yellow;
 }
 
 .attendance-status.absent {
-  background-color: #dc3545;
+  color: red;
+}
+
+@media (max-width: 768px) {
+  .attendance-table th,
+  .attendance-table td {
+    font-size: 14px;
+    padding: 8px;
+  }
 }

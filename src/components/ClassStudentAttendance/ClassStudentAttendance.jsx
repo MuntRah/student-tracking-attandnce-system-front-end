@@ -32,21 +32,30 @@ const ClassStudentAttendance = ({ classId }) => {
   return (
     <div className="class-student-attendance-container">
       <h1 className="attendance-header">Attendance Records</h1>
-      {attendanceRecords.length === 0 ? (
-        <p>No attendance records found for this student.</p>
-      ) : (
-        <ul className="attendance-list">
+      <table className="attendance-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Student Name</th>
+            <th>Attendance Status</th>
+          </tr>
+        </thead>
+        <tbody>
           {attendanceRecords.map((record) => (
-            <li key={record._id}>
-              <span className="attendance-date">{formatDate(record.date)}</span>
-              <span
+            <tr key={record._id}>
+              <td>{formatDate(record.date)}</td>
+              <td>{record.studentName}</td>
+              <td
                 className={`attendance-status ${record.status.toLowerCase()}`}
               >
                 {record.status}
-              </span>
-            </li>
+              </td>
+            </tr>
           ))}
-        </ul>
+        </tbody>
+      </table>
+      {attendanceRecords.length === 0 && (
+        <p>No attendance records found for this student.</p>
       )}
     </div>
   );

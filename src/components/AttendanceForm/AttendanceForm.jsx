@@ -45,33 +45,41 @@ const AttendanceForm = ({ classId, students = [], ClassDetail }) => {
         value={date}
         onChange={(e) => setDate(e.target.value)}
       />
-      <ul className="attendance-list">
+      <div className="attendance-schedule">
+        <div className="attendance-header">
+          <div className="attendance-column">Student Name</div>
+          <div className="attendance-column">Status</div>
+        </div>
         {students.length > 0 ? (
           students.map((student) => (
-            <li key={student._id}>
-              <span className="attendance-student-name">
-                {student.username}
-              </span>
-              <select
-                className="attendance-select"
-                onChange={(e) =>
-                  handleAttendanceChange(student._id, e.target.value)
-                }
-                defaultValue=""
-              >
-                <option value="" disabled>
-                  Select status
-                </option>
-                <option value="Present">Present</option>
-                <option value="Absent">Absent</option>
-                <option value="Late">Late</option>
-              </select>
-            </li>
+            <div className="attendance-row" key={student._id}>
+              <div className="attendance-column">{student.username}</div>
+              <div className="attendance-column">
+                <select
+                  className="attendance-select"
+                  onChange={(e) =>
+                    handleAttendanceChange(student._id, e.target.value)
+                  }
+                  defaultValue=""
+                >
+                  <option value="" disabled>
+                    Select status
+                  </option>
+                  <option value="Present">Present</option>
+                  <option value="Absent">Absent</option>
+                  <option value="Late">Late</option>
+                </select>
+              </div>
+            </div>
           ))
         ) : (
-          <li>No students enrolled</li>
+          <div className="attendance-row">
+            <div className="attendance-column" colSpan="2">
+              No students enrolled
+            </div>
+          </div>
         )}
-      </ul>
+      </div>
       <button className="attendance-button" onClick={submitAttendance}>
         Submit Attendance
       </button>

@@ -1,75 +1,119 @@
+/* General container styling */
 .attendance-form-container {
-  max-width: 600px;
-  margin: 20px auto;
+  width: 80%;
+  margin: 0 auto;
   padding: 20px;
-  background-color: #f8f9fa;
-  border-radius: 10px;
+  border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
 }
 
+/* Header styling */
 .attendance-form-header {
-  font-size: 1.5rem;
-  margin-bottom: 20px;
+  font-size: 2rem;
   text-align: center;
+  margin-bottom: 20px;
   color: #333;
 }
 
+/* Date picker styling */
 .attendance-date-label {
-  display: block;
-  margin-bottom: 10px;
-  font-weight: bold;
+  font-size: 1rem;
+  margin-right: 10px;
 }
 
 .attendance-date-input {
-  width: 100%;
+  font-size: 1rem;
   padding: 8px;
   margin-bottom: 20px;
-  border-radius: 5px;
-  border: 1px solid #ddd;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  width: 200px;
+  display: inline-block;
 }
 
-.attendance-list {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
+/* Schedule layout styling */
+.attendance-schedule {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
 }
 
-.attendance-list li {
+.attendance-header {
+  display: flex;
+  font-weight: bold;
+  background-color: #f1f1f1;
+  padding: 10px;
+  border-bottom: 2px solid #ddd;
+}
+
+.attendance-column {
+  flex: 1;
+  padding: 10px;
+  text-align: center;
+}
+
+.attendance-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-bottom: 1px solid #eee;
   padding: 10px;
-  margin-bottom: 10px;
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.attendance-student-name {
-  font-weight: bold;
-  color: #333;
 }
 
 .attendance-select {
-  padding: 6px;
-  border-radius: 20px;
+  padding: 5px 10px;
+  font-size: 1rem;
+  width: 150px;
   border: 1px solid #ccc;
-  background-color: #f1f1f1;
-  cursor: pointer;
+  border-radius: 4px;
+  background-color: #f9f9f9;
 }
 
+.attendance-select:focus {
+  outline: none;
+  border-color: #007bff;
+  background-color: #e9f4ff;
+}
+
+/* Submit button styling */
 .attendance-button {
+  display: block;
   width: 100%;
-  padding: 10px;
-  font-size: 1.1rem;
-  background-color: blueviolet;
-  color: #fff;
+  padding: 10px 15px;
+  font-size: 1.2rem;
+  background-color: #4caf50;
+  color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  margin-top: 20px;
   transition: background-color 0.3s;
 }
 
 .attendance-button:hover {
-  background-color: #0056b3;
+  background-color: #45a049;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .attendance-form-container {
+    width: 95%;
+  }
+
+  .attendance-header,
+  .attendance-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .attendance-column {
+    width: 100%;
+    text-align: left;
+  }
+
+  .attendance-select {
+    width: 100%;
+    margin-top: 10px;
+  }
 }
