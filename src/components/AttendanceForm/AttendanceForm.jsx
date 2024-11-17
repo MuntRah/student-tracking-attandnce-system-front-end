@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import "./AttendenceForm.css";
@@ -10,6 +10,17 @@ const AttendanceForm = ({ classId, students = [], ClassDetail }) => {
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
+
+  const [searchTeacher, setSearchTeacher] = useState("");
+  const [searchStudent, setSearchStudent] = useState("");
+  const [filteredStudents, setFilteredStudents] = useState(students);
+
+  useEffect(() => {
+    const filtered = students.filter((student) =>
+      student.username.toLowerCase().includes(searchStudent.toLowerCase())
+    );
+    setFilteredStudents(filtered);
+  }, [searchStudent, students]);
 
   const handleAttendanceChange = (studentId, status) => {
     setAttendanceRecords((prev) => ({ ...prev, [studentId]: status }));
@@ -38,6 +49,17 @@ const AttendanceForm = ({ classId, students = [], ClassDetail }) => {
   return (
     <div className="attendance-form-container">
       <h2 className="attendance-form-header">Mark Attendance</h2>
+
+      <div className="search-container">
+        <input
+          type="text"
+          className="search-input"
+          placeholder="Search Student (Name)"
+          value={searchStudent}
+          onChange={(e) => setSearchStudent(e.target.value)}
+        />
+      </div>
+
       <label className="attendance-date-label">Date:</label>
       <input
         type="date"
@@ -45,13 +67,14 @@ const AttendanceForm = ({ classId, students = [], ClassDetail }) => {
         value={date}
         onChange={(e) => setDate(e.target.value)}
       />
+
       <div className="attendance-schedule">
         <div className="attendance-header">
           <div className="attendance-column">Student Name</div>
           <div className="attendance-column">Status</div>
         </div>
-        {students.length > 0 ? (
-          students.map((student) => (
+        {filteredStudents.length > 0 ? (
+          filteredStudents.map((student) => (
             <div className="attendance-row" key={student._id}>
               <div className="attendance-column">{student.username}</div>
               <div className="attendance-column">
@@ -63,7 +86,7 @@ const AttendanceForm = ({ classId, students = [], ClassDetail }) => {
                   defaultValue=""
                 >
                   <option value="" disabled>
-                    Select status
+                    Select Status
                   </option>
                   <option value="Present">Present</option>
                   <option value="Absent">Absent</option>
@@ -75,11 +98,12 @@ const AttendanceForm = ({ classId, students = [], ClassDetail }) => {
         ) : (
           <div className="attendance-row">
             <div className="attendance-column" colSpan="2">
-              No students enrolled
+              No students enrolled or no matches found for your search criteria.
             </div>
           </div>
         )}
       </div>
+
       <button className="attendance-button" onClick={submitAttendance}>
         Submit Attendance
       </button>
