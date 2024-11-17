@@ -33,12 +33,13 @@
 }
 
 .attendance-status.late {
-  color: yellow; 
+  color: yellow;
 }
 
 .attendance-status.absent {
   color: red;
 }
+
 
 @media (max-width: 768px) {
   .attendance-table th,

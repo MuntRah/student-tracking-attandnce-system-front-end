@@ -36,7 +36,6 @@ const ClassStudentAttendance = ({ classId }) => {
         <thead>
           <tr>
             <th>Date</th>
-            <th>Student Name</th>
             <th>Attendance Status</th>
           </tr>
         </thead>
@@ -44,7 +43,6 @@ const ClassStudentAttendance = ({ classId }) => {
           {attendanceRecords.map((record) => (
             <tr key={record._id}>
               <td>{formatDate(record.date)}</td>
-              <td>{record.studentName}</td>
               <td
                 className={`attendance-status ${record.status.toLowerCase()}`}
               >
